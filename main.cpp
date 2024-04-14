@@ -59,7 +59,7 @@ int main(){
 //        std::cout << m1 + m2 << std::endl;
 //        std::cout << m1 << m3 << m1 * m3 << std::endl;
 //        std::cout << m3 << std::endl << m3.Transposition() << std::endl;
-        std::cout << m4.determinantNxN();
+        std::cout << m4 << m4.determinantNxN(m4);
     }
     catch (const char* e){
         std::cerr << e << std::endl;
