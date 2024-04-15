@@ -19,6 +19,7 @@ public:
         _size = size;
         _vec_size = _size;
         _vectors = new Vector<T>[_size];
+        for (size_t i = 0; i < _size; i++) _vectors[i] = Vector<T>(_vec_size);
     }
 
     Matrix(size_t size, size_t vec_size) {
@@ -103,31 +104,112 @@ public:
         return n;
     }
 
-    T determinantNxN(Matrix sub) {
-        if (sub._size != sub._vec_size) { throw "No Determinant ;)"; }
-        if (sub._size == 1) return sub._vectors[0][0];
-        if (sub._size == 2) {
-            return sub._vectors[0][0] * sub._vectors[1][1] - sub._vectors[0][1] * sub._vectors[1][0];
-        } else if (_size == 3) {
-            return sub._vectors[0][0] * (sub._vectors[1][1] * sub._vectors[2][2] - sub._vectors[1][2] * sub._vectors[2][1]) -
-                    sub._vectors[0][1] * (sub._vectors[1][0] * sub._vectors[2][2] - sub._vectors[1][2] * sub._vectors[2][0]) +
-                    sub._vectors[0][2] * (sub._vectors[1][0] * sub._vectors[2][1] - sub._vectors[1][1] * sub._vectors[2][0]);
-        } else {
-            T det = 0;
-            for (size_t i = 0; i < sub._size; ++i) {
-                Matrix<T> submatrix = Matrix<T>(size_t (sub._size - 1));
-                size_t index = 0;
-                for (size_t j = sub._size; j < sub._size * sub._size; ++j) {
-                    if (j % sub._size != i) {
-                        submatrix[index++] = sub._vectors[j / sub._size][j % sub._size];
-                    }
-                }
-                det += (i % 2 == 0 ? 1 : -1) * sub._vectors[i / sub._size][i % sub._size] * determinantNxN(submatrix);
-            }
-            return det;
+    // T determinantNxN(Matrix sub) {
+    //     if (sub._size != sub._vec_size) { return -404; }
+    //     if (sub._size == 1) return sub._vectors[0][0];
+    //     if (sub._size == 2) {
+    //         return sub._vectors[0][0] * sub._vectors[1][1] - sub._vectors[0][1] * sub._vectors[1][0];
+    //     } else if (_size == 3) {
+    //         return sub._vectors[0][0] * (sub._vectors[1][1] * sub._vectors[2][2] - sub._vectors[1][2] * sub._vectors[2][1]) -
+    //                 sub._vectors[0][1] * (sub._vectors[1][0] * sub._vectors[2][2] - sub._vectors[1][2] * sub._vectors[2][0]) +
+    //                 sub._vectors[0][2] * (sub._vectors[1][0] * sub._vectors[2][1] - sub._vectors[1][1] * sub._vectors[2][0]);
+    //     } else {
+    //         T det = 0;
+    //         for (size_t i = 0; i < sub._size; ++i) {
+    //             Matrix<T> submatrix = Matrix<T>(size_t (sub._size - 1));
+    //             size_t index = 0;
+    //             for (size_t j = sub._size; j < sub._size * sub._size; ++j) {
+    //                 if (j % sub._size != i) {
+    //                     submatrix[index / sub._size][index % sub._size] = sub._vectors[j / sub._size][j % sub._size];
+    //                     index++;
+    //                 }
+    //             }
+    //             det += (i % 2 == 0 ? 1 : -1) * sub._vectors[i / sub._size][i % sub._size] * determinantNxN(submatrix);
+    //         }
+    //         return det;
+    //     }
+    // }
+
+    T determinant() const {
+        if (_size != _vec_size) {
+            throw std::invalid_argument("Determinant can only be calculated for square matrices.");
         }
+        if (_size == 1) {
+            return _vectors[0][0];
+        }
+        T result = 0;
+        for (size_t i = 0; i < _vec_size; i++) {
+            Matrix<T> minor(_size - 1, _vec_size - 1);
+            for (size_t j = 1; j < _size; j++) {
+                size_t k = 0;
+                for (size_t l = 0; l < _vec_size; l++) {
+                    if (l == i) {
+                        continue;
+                    }
+                    minor._vectors[j - 1][k] = _vectors[j][l];
+                    k++;
+                }
+            }
+            result += _vectors[0][i] * minor.determinant() * ((i % 2) == 0 ? 1 : -1);
+        }
+        return result;
     }
 
+    Matrix Inverse(){
+        if (_vec_size != _size || this->determinant() != 0) throw "NO INVERSION??????";
+        Matrix<T> result = Matrix<T>(_size);
+        for (size_t i = 0; i < _size; i++){
+            for (size_t j = 0; j < _size; j++){
+                result._vectors[i][j] = _vectors[i][j];
+            }
+        }
+        Matrix<T> ones(_size);
+        double koef = 1;
+        int count = 1;
+        for (size_t i = 0; i < _size; i++){
+                ones[i][i] = 1;
+            }
+        while (count != _size){
+            for (size_t i = count; i < result._size; i++){
+                koef = 1 / result._vectors[i][i];
+                for (size_t j = 0; j < result._size; j++){
+                    if (i == j){
+                        result._vectors[i][j] *= koef;
+                        ones._vectors[i][j] *= koef;
+                    }
+                    else {
+                        
+                    }
+                }
+            }
+            count++;
+        }
+        return result;
+    }
+
+    // Matrix& operator=(const Matrix& tmp){
+    //     if (this == &tmp)
+    //         return *this;
+    //     if (tmp._size != _size || tmp._vec_size != _vec_size){
+    //         delete [] _vectors;
+    //         _size = tmp._size;
+    //         _vec_size = tmp._vec_size;
+    //         _vectors = new Vector<T>[_vec_size];
+    //     }
+    //     for (size_t i = 0; i < _size; i++)
+    //         _vectors[i] = tmp._vectors[i];
+    //     return *this;
+    // }
+
+    // Matrix(const Matrix& m){
+    //     _size = m._size;
+    //     _vec_size = m._vec_size;    
+    //     for (size_t i = 0; i < m._size; i++){
+    //         for (size_t j = 0; j < m._vec_size; j++){
+    //             _vectors[i][j] = m._vectors[i][j];
+    //         }
+    //     }
+    // }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {
         for (size_t i = 0; i < matrix._size; i++)
