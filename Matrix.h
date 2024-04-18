@@ -155,34 +155,46 @@ public:
         return result;
     }
 
-    Matrix Inverse(){
-        if (_vec_size != _size || this->determinant() != 0) throw "NO INVERSION??????";
+    Matrix Inverse() {
+        if (_vec_size != _size || this->determinant() == 0) throw "NO INVERSION??????";
         Matrix<T> result = Matrix<T>(_size);
-        for (size_t i = 0; i < _size; i++){
-            for (size_t j = 0; j < _size; j++){
+        for (size_t i = 0; i < _size; i++) {
+            for (size_t j = 0; j < _size; j++) {
                 result._vectors[i][j] = _vectors[i][j];
             }
         }
         Matrix<T> ones(_size);
         double koef = 1;
-        int count = 1;
-        for (size_t i = 0; i < _size; i++){
-                ones[i][i] = 1;
-            }
-        while (count != _size){
-            for (size_t i = count; i < result._size; i++){
-                koef = 1 / result._vectors[i][i];
-                for (size_t j = 0; j < result._size; j++){
-                    if (i == j){
-                        result._vectors[i][j] *= koef;
-                        ones._vectors[i][j] *= koef;
-                    }
-                    else {
-                        
+        int count = 0;
+        for (size_t i = 0; i < _size; i++) {
+            ones[i][i] = 1;
+        }
+        while (count != result._size) {
+                koef = 1 / result._vectors[count][count];
+                for (size_t j = 0; j < result._size; j++) {
+                        result._vectors[count][j] *= koef;
+                        ones._vectors[count][j] *= koef;
+                }
+
+            for (size_t i = count + 1; i < result._size; i++){
+                koef = result._vectors[i][count];
+                    for (size_t j = 0; j < result._size; j++){
+                        result._vectors[i][j] = result._vectors[i][j] - result._vectors[count][j] * koef;
+                        ones[i][j] = ones[i][j] - ones[count][j] * koef;
                     }
                 }
-            }
             count++;
+        }
+        count = result._size - 1;
+        while (count >= 0){
+            for (size_t i = count; i > -1; i--){
+                koef = 1 / result._vectors[i][count];
+                for (size_t j = result._size - 1; j > -1; j--){
+                    result._vectors[i][j] = result._vectors[i][j] - result._vectors[count][j] * koef;
+                    ones[i][j] = ones[i][j] - ones[count][j] * koef;
+                }
+            }
+            count--;
         }
         return result;
     }

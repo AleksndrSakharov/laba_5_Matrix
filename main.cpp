@@ -11,9 +11,9 @@ int main(){
     double arr7[1] = {4};
     double arr8[1] = {-2};
     double arr9[1] = {5};
-    double arr10[4] = {1, 2, 3, 4};
-    double arr11[4] = {1, 2, 3, 4};
-    double arr12[4] = {1, 2, 3, 4};
+    double arr10[4] = {1, 2, 3, 5};
+    double arr11[4] = {8, 2, 3, 4};
+    double arr12[4] = {1, 8, 3, 4};
     double arr13[4] = {1, 2, 3, 4};
     double arr14[3] = {1, 2, 3};
     double arr15[3] = {1, 2, 3};
