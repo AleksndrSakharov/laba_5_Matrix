@@ -186,42 +186,47 @@ public:
             count++;
         }
         count = result._size - 1;
-        while (count >= 0){
-            for (size_t i = count; i > -1; i--){
-                koef = 1 / result._vectors[i][count];
-                for (size_t j = result._size - 1; j > -1; j--){
+        while (count != -1){
+            for (int i = count - 1; i > -1; i--){
+                koef = result._vectors[i][count];
+                for (size_t j = 0; j < result._size; j++){
                     result._vectors[i][j] = result._vectors[i][j] - result._vectors[count][j] * koef;
                     ones[i][j] = ones[i][j] - ones[count][j] * koef;
                 }
             }
             count--;
         }
-        return result;
+        for (size_t i = count + 1; i < result._size; i++){
+            for (size_t j = 0; j < result._size; j++){
+                if (ones[i][j] < 0.0001 && ones[i][j] > -0.0001) ones[i][j] = 0;
+            }
+        }
+        return ones;
     }
 
-    // Matrix& operator=(const Matrix& tmp){
-    //     if (this == &tmp)
-    //         return *this;
-    //     if (tmp._size != _size || tmp._vec_size != _vec_size){
-    //         delete [] _vectors;
-    //         _size = tmp._size;
-    //         _vec_size = tmp._vec_size;
-    //         _vectors = new Vector<T>[_vec_size];
-    //     }
-    //     for (size_t i = 0; i < _size; i++)
-    //         _vectors[i] = tmp._vectors[i];
-    //     return *this;
-    // }
+     Matrix& operator=(const Matrix& tmp){
+         if (this == &tmp)
+             return *this;
+         if (tmp._size != _size || tmp._vec_size != _vec_size){
+             delete [] _vectors;
+             _size = tmp._size;
+             _vec_size = tmp._vec_size;
+             _vectors = new Vector<T>[_vec_size];
+         }
+         for (size_t i = 0; i < _size; i++)
+             _vectors[i] = tmp._vectors[i];
+         return *this;
+     }
 
-    // Matrix(const Matrix& m){
-    //     _size = m._size;
-    //     _vec_size = m._vec_size;    
-    //     for (size_t i = 0; i < m._size; i++){
-    //         for (size_t j = 0; j < m._vec_size; j++){
-    //             _vectors[i][j] = m._vectors[i][j];
-    //         }
-    //     }
-    // }
+     Matrix(const Matrix& m){
+         _size = m._size;
+         _vec_size = m._vec_size;
+         for (size_t i = 0; i < m._size; i++){
+             for (size_t j = 0; j < m._vec_size; j++){
+                 _vectors[i][j] = m._vectors[i][j];
+             }
+         }
+     }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {
         for (size_t i = 0; i < matrix._size; i++)

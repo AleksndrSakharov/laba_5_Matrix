@@ -56,6 +56,7 @@ int main(){
     Matrix<double> m2 = Matrix<double>(2, 5,a2);
     Matrix<double> m3 = Matrix<double>(5, 1,a3);
     Matrix<double> m4 = Matrix<double>(4, 4,a4);
+    Matrix<double> m5 = Matrix<double>(4);
     try {
 //        std::cout << m3 << std::endl << m3.Transposition() << std::endl << std::endl;
 //        std::cout << m1 - m2 << std::endl;
@@ -63,7 +64,12 @@ int main(){
 //        std::cout << m1 << m3 << m1 * m3 << std::endl;
 //        std::cout << m3 << std::endl << m3.Transposition() << std::endl;
         // std::cout  << m4.determinant();
-        std::cout << m4 << m4.Inverse();
+        m5 = m4.Inverse();
+        std::cout << m4 << m5
+        << "|m4| = " << m4.determinant() << ", |m5| = " << m5.determinant() << std::endl << "|m4|+|m5| = "
+        << m4.determinant() + m5.determinant() << std::endl
+        << "|m4 + m5| = " << (m4 + m5).determinant() << std::endl
+        << m5 - m4 << m5 + m4 << m5.Transposition() << m5.Transposition() * m4;
     }
     catch (const char* e){
         std::cerr << e << std::endl;
