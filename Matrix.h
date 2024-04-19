@@ -132,7 +132,7 @@ public:
 
     T determinant() const {
         if (_size != _vec_size) {
-            throw std::invalid_argument("Determinant can only be calculated for square matrices.");
+            throw "NO DETERMINANT????";
         }
         if (_size == 1) {
             return _vectors[0][0];
