@@ -68,6 +68,7 @@ public:
         for (size_t i = 0; i < _size; i++) {
             n[i] = (*this)[i] + m[i];
         }
+        std::cout << &n << std::endl;
         return n;
     }
 
@@ -205,8 +206,10 @@ public:
     }
 
      Matrix& operator=(const Matrix& tmp){
-         if (this == &tmp)
+         if (this == &tmp){
+        //  std::cout << this << "HERE" << std::endl;
              return *this;
+         }
          if (tmp._size != _size || tmp._vec_size != _vec_size){
              delete [] _vectors;
              _size = tmp._size;
@@ -215,17 +218,23 @@ public:
          }
          for (size_t i = 0; i < _size; i++)
              _vectors[i] = tmp._vectors[i];
+        // std::cout << this << "HERE" << std::endl;
          return *this;
      }
 
      Matrix(const Matrix& m){
+        std::cout << "Copy" << std::endl;
          _size = m._size;
          _vec_size = m._vec_size;
+        //  delete [] _vectors;
+         Vector<T>* vecs = new Vector<T>[m._size];
+         for (size_t i = 0; i < m._size; i++) vecs[i] = Vector<T>(_vec_size);
          for (size_t i = 0; i < m._size; i++){
              for (size_t j = 0; j < m._vec_size; j++){
-                 _vectors[i][j] = m._vectors[i][j];
+                 vecs[i][j] = m._vectors[i][j];
              }
          }
+         _vectors = vecs;
      }
 
     friend std::ostream &operator<<(std::ostream &os, const Matrix &matrix) {

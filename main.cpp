@@ -16,8 +16,8 @@ int main(){
     double arr12[4] = {1, 8, 3, 4};
     double arr13[4] = {1, 2, 3, 4};
     double arr14[3] = {1, 2, 3};
-    double arr15[3] = {1, 2, 3};
-    double arr16[3] = {1, 2, 3};
+    double arr15[3] = {4, 1, 6};
+    double arr16[3] = {7, 8, 9};
 
     Vector<double> vector3 = Vector<double>(5, arr3);
     Vector<double> vector4 = Vector<double>(5, arr4);
@@ -32,6 +32,9 @@ int main(){
     Vector<double> vector11 = Vector<double>(4, arr11);
     Vector<double> vector12 = Vector<double>(4, arr12);
     Vector<double> vector13 = Vector<double>(4, arr13);
+    Vector<double> vector14 = Vector<double>(3, arr14);
+    Vector<double> vector15 = Vector<double>(3, arr15);
+    Vector<double> vector16 = Vector<double>(3, arr16);
 
 
 
@@ -52,11 +55,17 @@ int main(){
     a4[1] = vector11;
     a4[2] = vector12;
     a4[3] = vector13;
+    Vector<double>* a5 = new Vector<double>[3];
+    a5[0] = vector14;
+    a5[1] = vector15;
+    a5[2] = vector16;
     Matrix<double> m1 = Matrix<double>(2, 5, a1);
     Matrix<double> m2 = Matrix<double>(2, 5,a2);
     Matrix<double> m3 = Matrix<double>(5, 1,a3);
     Matrix<double> m4 = Matrix<double>(4, 4,a4);
     Matrix<double> m5 = Matrix<double>(4);
+    Matrix<double> m6 = Matrix<double>(3, 3, a5);
+    Matrix<double> m7 = Matrix<double>(3);
     try {
 //        std::cout << m3 << std::endl << m3.Transposition() << std::endl << std::endl;
 //        std::cout << m1 - m2 << std::endl;
@@ -64,12 +73,17 @@ int main(){
 //        std::cout << m1 << m3 << m1 * m3 << std::endl;
 //        std::cout << m3 << std::endl << m3.Transposition() << std::endl;
         // std::cout  << m4.determinant();
-        m5 = m4.Inverse();
-        std::cout << m4 << m5
-        << "|m4| = " << m4.determinant() << ", |m5| = " << m5.determinant() << std::endl << "|m4|+|m5| = "
-        << m4.determinant() + m5.determinant() << std::endl
-        << "|m4 + m5| = " << (m4 + m5).determinant() << std::endl
-        << m5 - m4 << m5 + m4 << m5.Transposition() << m5.Transposition() * m4;
+        // m5 = m4.Inverse();
+        // std::cout << m4 << m5
+        // << "|m4| = " << m4.determinant() << ", |m5| = " << m5.determinant() << std::endl << "|m4|+|m5| = "
+        // << m4.determinant() + m5.determinant() << std::endl
+        // << "|m4 + m5| = " << (m4 + m5).determinant() << std::endl
+        // << m5 - m4 << m5 + m4 << m5.Transposition() << m5.Transposition() * m4;
+        // m7 = m6.Inverse();
+        // m1 = m2;
+        Matrix<double> m8 = m7 + m6;
+        std::cout << &m8 << std::endl;
+        // std::cout << m6 << m7 << m6 * m7;
     }
     catch (const char* e){
         std::cerr << e << std::endl;
@@ -82,5 +96,6 @@ int main(){
     delete [] a2;
     delete [] a3;
     delete [] a4;
+    delete [] a5;
     return 0;
 }
