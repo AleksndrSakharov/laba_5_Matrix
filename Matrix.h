@@ -96,6 +96,7 @@ public:
                 for (size_t j = 0; j < _vec_size; j++) {
                     sum += _vectors[i][j] * m._vectors[j][t];
                 }
+                if (sum < 0.000001 && sum > -0.000001) sum = 0;
                 n[i][t] = sum;
 //                    std::cout << n;
             }
