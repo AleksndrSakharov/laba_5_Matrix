@@ -79,11 +79,11 @@ int main(){
         // << m4.determinant() + m5.determinant() << std::endl
         // << "|m4 + m5| = " << (m4 + m5).determinant() << std::endl
         // << m5 - m4 << m5 + m4 << m5.Transposition() << m5.Transposition() * m4;
-        // m7 = m6.Inverse();
+        m7 = m6.Inverse();
         // m1 = m2;
-        Matrix<double> m8 = m7 + m6;
-        std::cout << &m8 << std::endl;
-        // std::cout << m6 << m7 << m6 * m7;
+        // Matrix<double> m8 = m7 + m6;
+        // std::cout << &m8 << std::endl;
+        std::cout << m6 << m7 << m6 * m7;
     }
     catch (const char* e){
         std::cerr << e << std::endl;
